@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PartyPopper, Calendar, MapPin, Cake, CheckCircle2, X, ChevronDown } from 'lucide-react';
+import { PartyPopper, Calendar, MapPin, X, ChevronDown, Skull, Frown, TrendingDown, Laugh, AlertTriangle } from 'lucide-react';
 import Button from './components/common/Button';
 import Modal from './components/common/Modal';
 import './App.css';
@@ -31,42 +31,137 @@ const Countdown = ({ targetDate }) => {
   return (
     <div className="modern-countdown">
       {Object.entries(timeLeft).map(([label, value]) => (
-        <div key={label} className="countdown-block card glass">
-          <span className="count-num">{value}</span>
+        <motion.div 
+          key={label} 
+          className="countdown-block"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", bounce: 0.5 }}
+        >
+          <span className="count-num">{value.toString().padStart(2, '0')}</span>
           <span className="count-label">{label.toUpperCase()}</span>
-        </div>
+        </motion.div>
       ))}
+    </div>
+  );
+};
+
+const CustomSelect = ({ value, onChange, options, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="custom-select-container" ref={dropdownRef}>
+      <div 
+        className={`form-input custom-select-header ${isOpen ? 'open' : ''} ${!value ? 'placeholder' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{value ? options.find(o => o.value === value)?.label : placeholder}</span>
+        <ChevronDown size={20} className="select-icon" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
+      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="custom-select-dropdown"
+            initial={{ opacity: 0, y: -20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.8 }}
+            transition={{ type: "spring", bounce: 0.5 }}
+          >
+            {options.map((option) => (
+              <div 
+                key={option.value}
+                className={`custom-select-option ${value === option.value ? 'selected' : ''}`}
+                onClick={() => {
+                  onChange(option.value);
+                  setIsOpen(false);
+                }}
+              >
+                {option.label}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 function App() {
   const [isRSVPModalOpen, setIsRSVPModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', reason: '' });
+  const [formData, setFormData] = useState({ name: '', reason: '', hairline: '10' });
   const [isSuccess, setIsSuccess] = useState(false);
+  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
+
+  const submitTexts = ["SUBMIT ROAST", "END HIM", "NO MERCY", "DESTROY HIS EGO", "SEND IT"];
+  const [submitText, setSubmitText] = useState(submitTexts[0]);
 
   const handleRSVP = async (e) => {
     e.preventDefault();
-    await new Promise(r => setTimeout(r, 1000));
+    if (!formData.reason) {
+      alert("YO! Pick an excuse!");
+      return;
+    }
+    await new Promise(r => setTimeout(r, 800));
     setIsSuccess(true);
     setTimeout(() => {
       setIsRSVPModalOpen(false);
       setIsSuccess(false);
-      setFormData({ name: '', reason: '' });
-    }, 2000);
+      setFormData({ name: '', reason: '', hairline: '10' });
+      setSubmitText(submitTexts[0]);
+    }, 4000);
   };
+
+  const handleNameChange = (e) => {
+    let val = e.target.value;
+    if (val.toLowerCase() === 'shibin') {
+      alert("Nice try Shibin. You can't RSVP to your own roast! I'm changing your name to 'Loser'.");
+      val = "Loser";
+    }
+    setFormData({...formData, name: val});
+  };
+
+  const handleButtonHover = () => {
+    setSubmitText(submitTexts[Math.floor(Math.random() * submitTexts.length)]);
+  };
+
+  const handleRunAway = () => {
+    setButtonPos({
+      x: Math.random() * 200 - 100,
+      y: Math.random() * 200 - 100
+    });
+  };
+
+  const reasonOptions = [
+    { value: "Cake", label: "🍰 Free Cake (Only reason)" },
+    { value: "Roast", label: "🔥 Here to roast his fashion" },
+    { value: "Hair", label: "👴 To check his hairline" },
+    { value: "Debt", label: "💰 He owes me money" },
+    { value: "Pity", label: "😭 Pure pity vote" }
+  ];
 
   return (
     <div className="fun-app">
-      {/* Floating Elements Background */}
       <div className="floating-bg">
-        {[...Array(10)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <div key={i} className="floating-item" style={{ 
             left: `${Math.random() * 100}%`, 
             animationDelay: `${Math.random() * 5}s`,
-            fontSize: `${Math.random() * 20 + 20}px`
+            animationDuration: `${Math.random() * 5 + 3}s`,
+            fontSize: `${Math.random() * 40 + 30}px`,
+            zIndex: Math.random() > 0.5 ? 2 : 0
           }}>
-            {['🎂', '🎈', '🎉', '💩', '🍻'][Math.floor(Math.random() * 5)]}
+            {['🤡', '👴', '📉', '😭', '💸', '🐌', '🛑'][Math.floor(Math.random() * 7)]}
           </div>
         ))}
       </div>
@@ -74,56 +169,81 @@ function App() {
       <main className="content-wrapper">
         <header className="fun-header">
           <motion.div 
-            initial={{ scale: 0 }} 
-            animate={{ scale: 1 }} 
-            className="logo-circle glass"
+            initial={{ scale: 0, rotate: -720 }} 
+            animate={{ scale: 1, rotate: 0 }} 
+            transition={{ type: "spring", stiffness: 100, damping: 10 }}
+            className="logo-circle"
           >
-            <Cake size={40} className="text-primary" />
+            <AlertTriangle size={60} color="#000" />
           </motion.div>
-          <h1 className="main-title">SHIBIN'S <span className="text-primary">ROAST</span> DAY</h1>
+          <motion.h1 
+            className="main-title text-gradient"
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", bounce: 0.6 }}
+          >
+            SHIBIN IS GETTING OLD!
+          </motion.h1>
         </header>
 
         <section className="hero-focus">
           <motion.div 
             className="photo-card-container"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", bounce: 0.7 }}
           >
-            <div className="shibin-photo-frame glass">
-              <img src="/shibin.jpg" alt="Shibin looking suspicious" className="main-photo" />
-              <div className="photo-caption">"I swear I'm 25" - Shibin, probably.</div>
+            <div className="shibin-photo-frame">
+              <img src="/shibin.jpg" alt="Shibin looking lost" className="main-photo" />
+              <div className="photo-caption">"I still use Internet Explorer" - Shibin</div>
             </div>
           </motion.div>
 
           <motion.div 
             className="countdown-section"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
           >
-            <h2 className="section-subtitle">Days until he officially becomes an uncle...</h2>
+            <h2 className="section-subtitle">COUNTDOWN TO HIS MID-LIFE CRISIS:</h2>
             <Countdown targetDate="2026-05-15T19:00:00" />
           </motion.div>
 
           <motion.div 
             className="action-section"
-            initial={{ y: 50, opacity: 0 }}
+            initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.4, type: "spring" }}
           >
-            <Button onClick={() => setIsRSVPModalOpen(true)} className="pulse-btn">
-              RSVP TO ROAST HIM
-            </Button>
-            <p className="fun-details">
-              📅 May 15th @ 7PM | 📍 The Grand Pavilion | 🍻 BYO Jokes
-            </p>
+            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Button onClick={() => setIsRSVPModalOpen(true)} className="pulse-btn">
+                <Skull size={30} />
+                I'M READY TO ROAST
+                <Skull size={30} />
+              </Button>
+              
+              <motion.div animate={{ x: buttonPos.x, y: buttonPos.y }} transition={{ type: "spring", stiffness: 300 }}>
+                <Button 
+                  onMouseEnter={handleRunAway} 
+                  onClick={handleRunAway}
+                  style={{ background: '#ddd', color: '#888', border: '4px solid #aaa', fontSize: '1rem', padding: '10px 20px', boxShadow: 'none' }}
+                >
+                  Give him a compliment
+                </Button>
+              </motion.div>
+            </div>
+
+            <div className="fun-details">
+              <div className="detail-item"><Calendar size={24} color="#000" /> May 15th @ 7PM</div>
+              <div className="detail-item"><MapPin size={24} color="#000" /> The Grand Pavilion</div>
+              <div className="detail-item"><TrendingDown size={24} color="#000" /> His Dignity</div>
+            </div>
           </motion.div>
         </section>
 
-        <section className="roast-ticker glass">
+        <section className="roast-ticker">
           <div className="ticker-content">
-            "Shibin still thinks HTML is a programming language" • "His hairline is retreating faster than his social battery" • "Expert in making 2-minute noodles in 15 minutes" • "Ask him about his 17 failed startups"
+            "Shibin thinks a 5K run is a computer monitor" 🛑 "Still copies code from StackOverflow without reading it" 🛑 "Hairline retreating faster than his crypto portfolio" 🛑 "Uses light mode in VS Code" 🛑 "Ask him about his 17 failed app ideas" 🛑 "Takes 3 days to reply to 'hello'" 🛑 "Thinks mayonnaise is spicy" 🛑 "Shibin thinks a 5K run is a computer monitor"
           </div>
         </section>
       </main>
@@ -131,50 +251,94 @@ function App() {
       <Modal 
         isOpen={isRSVPModalOpen} 
         onClose={() => setIsRSVPModalOpen(false)}
-        title={isSuccess ? "ROAST RECORDED!" : "JOIN THE CIRCUS"}
+        title={isSuccess ? "PRAY FOR SHIBIN" : "SIGN HIS DEATH WARRANT"}
         size="small"
       >
-        {isSuccess ? (
-          <div className="success-state">
-            <CheckCircle2 size={64} className="text-primary" />
-            <p>See you there! Don't forget to bring better jokes than his.</p>
-          </div>
-        ) : (
-          <form className="rsvp-fun-form" onSubmit={handleRSVP}>
-            <div className="form-group">
-              <label>Your Name (to roast you back)</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                required 
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-              />
-            </div>
-            <div className="form-group">
-              <label>Reason for coming</label>
-              <select 
-                className="form-input"
-                required
-                value={formData.reason}
-                onChange={e => setFormData({...formData, reason: e.target.value})}
+        <AnimatePresence mode="wait">
+          {isSuccess ? (
+            <motion.div 
+              key="success"
+              className="success-state"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: "spring", bounce: 0.6 }}
+            >
+              <div className="success-icon-wrap">
+                <Laugh size={70} color="#000" />
+              </div>
+              <h3 className="text-gradient" style={{ fontSize: '2.5rem', margin: 0, fontFamily: 'Bangers' }}>YOU'RE IN!</h3>
+              <p style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 900 }}>Bring your best insults. He's gonna cry.</p>
+            </motion.div>
+          ) : (
+            <motion.form 
+              key="form"
+              className="rsvp-fun-form" 
+              onSubmit={handleRSVP}
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -50, opacity: 0 }}
+            >
+              <div className="form-group">
+                <label>Your Fake Name (Hide from him)</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  required 
+                  placeholder="e.g. Batman"
+                  value={formData.name}
+                  onChange={handleNameChange}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>How bad is his hairline today? (1-10)</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  <span style={{ fontSize: '1.5rem' }}>👨</span>
+                  <input 
+                    type="range" 
+                    min="1" max="10" 
+                    className="form-input" 
+                    style={{ padding: '0', height: '10px', flex: 1, accentColor: 'var(--primary)' }}
+                    value={formData.hairline}
+                    onChange={e => setFormData({...formData, hairline: e.target.value})}
+                  />
+                  <span style={{ fontSize: '1.5rem' }}>👴</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: '900', color: '#000', width: '40px', textAlign: 'right' }}>
+                    {formData.hairline}
+                  </span>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Why are you even doing this?</label>
+                <CustomSelect
+                  value={formData.reason}
+                  onChange={(val) => setFormData({...formData, reason: val})}
+                  options={reasonOptions}
+                  placeholder="Select a lame excuse..."
+                />
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full pulse-btn" 
+                style={{ marginTop: '20px', padding: '15px' }}
+                onMouseEnter={handleButtonHover}
               >
-                <option value="">Choose your excuse...</option>
-                <option value="Cake">Free Cake (Only reason)</option>
-                <option value="Roast">Here to roast his fashion</option>
-                <option value="Pity">Pity vote for Shibin</option>
-              </select>
-            </div>
-            <Button type="submit" className="w-full">CONFIRM SURVIVAL</Button>
-          </form>
-        )}
+                {submitText}
+              </Button>
+            </motion.form>
+          )}
+        </AnimatePresence>
       </Modal>
 
       <footer className="simple-footer">
-        <p>Built with ❤️ and extreme levels of sarcasm for Shibin.</p>
+        <p>Built with 0% respect for Shibin.</p>
       </footer>
     </div>
   );
 }
 
 export default App;
+
