@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: clamp(36px, 6vw, 60px) clamp(14px, 4vw, 20px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,7 +23,7 @@
 
 .fun-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: clamp(30px, 5vw, 50px);
   position: relative;
 }
 
@@ -56,11 +56,12 @@
 }
 
 .main-title {
-  font-size: 4.5rem;
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
   font-weight: 900;
   margin: 0;
   text-transform: uppercase;
   transform: rotate(-2deg);
+  line-height: 1.05;
 }
 
 .hero-focus {
@@ -68,16 +69,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: clamp(26px, 5vw, 50px);
 }
 
 .photo-card-container {
   position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .shibin-photo-frame {
   width: 100%;
-  max-width: 400px;
+  max-width: min(400px, 92vw);
   border-radius: 20px;
   overflow: hidden;
   border: 8px solid #000;
@@ -101,20 +105,20 @@
 }
 
 .photo-caption {
-  padding: 15px;
+  padding: clamp(10px, 3vw, 15px);
   text-align: center;
   font-weight: 900;
   background: var(--accent);
   color: #000;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 4.5vw, 1.5rem);
   border-top: 4px solid #000;
   font-family: 'Comic Neue', cursive;
 }
 
 .section-subtitle {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 30px;
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  margin-bottom: clamp(14px, 3vw, 30px);
   color: var(--accent);
   text-shadow: 2px 2px 0 #000;
   transform: rotate(-1deg);
@@ -122,16 +126,17 @@
 
 .modern-countdown {
   display: flex;
-  gap: 20px;
+  gap: clamp(10px, 2.5vw, 20px);
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .countdown-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 100px;
-  padding: 20px 15px;
+  min-width: clamp(72px, 20vw, 100px);
+  padding: clamp(10px, 2.5vw, 20px) clamp(8px, 2vw, 15px);
   border-radius: 15px;
   background: var(--primary);
   border: 4px solid #000;
@@ -145,13 +150,13 @@
 }
 
 .count-num {
-  font-size: 3.5rem;
+  font-size: clamp(1.8rem, 7vw, 3.5rem);
   color: #fff;
   text-shadow: 3px 3px 0 #000;
 }
 
 .count-label {
-  font-size: 16px;
+  font-size: clamp(11px, 2.5vw, 16px);
   font-weight: 900;
   color: #000;
   margin-top: 10px;
@@ -163,12 +168,31 @@
 
 .action-section {
   text-align: center;
-  margin-top: 40px;
+  margin-top: clamp(20px, 4vw, 40px);
+  width: 100%;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.runaway-btn-wrap {
+  width: fit-content;
+}
+
+.runaway-btn {
+  font-size: 1rem !important;
+  padding: 10px 20px !important;
+  max-width: 100%;
 }
 
 .pulse-btn {
-  font-size: 2rem !important;
-  padding: 20px 50px !important;
+  font-size: clamp(1.1rem, 4.2vw, 2rem) !important;
+  padding: clamp(12px, 3vw, 20px) clamp(18px, 6vw, 50px) !important;
   border-radius: 15px !important;
   background: var(--accent) !important;
   border: 5px solid #000 !important;
@@ -192,10 +216,10 @@
 }
 
 .fun-details {
-  margin-top: 30px;
+  margin-top: clamp(20px, 4vw, 30px);
   font-weight: 900;
   color: #fff;
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3.2vw, 1.3rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,7 +232,7 @@
   align-items: center;
   gap: 8px;
   background: var(--surface-dark);
-  padding: 10px 20px;
+  padding: clamp(8px, 2vw, 10px) clamp(12px, 4vw, 20px);
   border-radius: 10px;
   border: 3px solid #000;
   box-shadow: 4px 4px 0 #000;
@@ -224,8 +248,8 @@
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   overflow: hidden;
-  padding: 20px 0;
-  margin-top: 80px;
+  padding: clamp(10px, 2.5vw, 20px) 0;
+  margin-top: clamp(40px, 8vw, 80px);
   background: var(--accent);
   border-top: 5px solid #000;
   border-bottom: 5px solid #000;
@@ -233,9 +257,9 @@
 
 .ticker-content {
   display: flex;
-  gap: 50px;
+  gap: clamp(20px, 6vw, 50px);
   font-weight: 900;
-  font-size: 2rem;
+  font-size: clamp(1rem, 4.5vw, 2rem);
   color: #000;
   animation: tickerFast 10s linear infinite;
   white-space: nowrap;
@@ -279,9 +303,21 @@
   text-align: center;
 }
 
+.success-title {
+  font-size: clamp(1.7rem, 8vw, 2.5rem);
+  margin: 0;
+  font-family: 'Bangers', cursive;
+}
+
+.success-copy {
+  color: #fff;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  font-weight: 900;
+}
+
 .success-icon-wrap {
-  width: 120px;
-  height: 120px;
+  width: clamp(88px, 24vw, 120px);
+  height: clamp(88px, 24vw, 120px);
   border-radius: 50%;
   background: var(--secondary);
   display: flex;
@@ -293,11 +329,11 @@
 }
 
 .simple-footer {
-  padding: 60px 0 40px;
+  padding: clamp(34px, 8vw, 60px) 0 clamp(24px, 6vw, 40px);
   text-align: center;
   color: #fff;
   font-weight: 900;
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 3.5vw, 1.2rem);
   text-shadow: 2px 2px 0 #000;
 }
 
@@ -306,6 +342,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 }
 
 .form-group {
@@ -315,19 +352,19 @@
 }
 
 .form-group label {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3.4vw, 1.2rem);
   font-weight: 900;
   color: #000;
 }
 
 .form-input {
   width: 100%;
-  padding: 16px 20px;
+  padding: clamp(12px, 2.5vw, 16px) clamp(14px, 4vw, 20px);
   border-radius: 10px;
   background: #fff;
   border: 4px solid #000;
   color: #000;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
   font-family: inherit;
   font-weight: 900;
   box-shadow: 5px 5px 0 #000;
@@ -380,11 +417,11 @@
 }
 
 .custom-select-option {
-  padding: 14px 20px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(14px, 4vw, 20px);
   cursor: pointer;
   color: #000;
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 3.2vw, 1.1rem);
   border-bottom: 3px solid #000;
 }
 
@@ -402,10 +439,106 @@
   color: #000;
 }
 
+.hairline-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hairline-emoji {
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
+}
+
+.hairline-slider {
+  flex: 1;
+}
+
+.hairline-score {
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  font-weight: 900;
+  color: #000;
+  width: 40px;
+  text-align: right;
+}
+
 @media (max-width: 768px) {
-  .main-title { font-size: 3rem; }
-  .modern-countdown { gap: 10px; flex-wrap: wrap; }
-  .countdown-block { min-width: 80px; padding: 15px 10px; }
-  .count-num { font-size: 2.5rem; }
-  .fun-details { flex-direction: column; gap: 10px; }
+  .logo-circle {
+    width: 84px;
+    height: 84px;
+    margin-bottom: 20px;
+  }
+
+  .shibin-photo-frame {
+    transform: none;
+    box-shadow: 10px 10px 0 var(--secondary);
+  }
+
+  .fun-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .detail-item {
+    width: 100%;
+    justify-content: center;
+    transform: none !important;
+  }
+
+  .action-buttons {
+    gap: 12px;
+  }
+
+  .runaway-btn-wrap {
+    width: 100%;
+  }
+
+  .runaway-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding-top: 28px;
+  }
+
+  .logo-circle {
+    width: 72px;
+    height: 72px;
+  }
+
+  .photo-caption {
+    border-top-width: 3px;
+  }
+
+  .countdown-block {
+    border-width: 3px;
+    box-shadow: 4px 4px 0 #000;
+  }
+
+  .pulse-btn {
+    width: 100%;
+    box-shadow: 5px 5px 0 #000 !important;
+  }
+
+  .hairline-row {
+    gap: 10px;
+  }
+
+  .hairline-score {
+    width: 28px;
+  }
+}
+
+@media (hover: none) {
+  .shibin-photo-frame:hover {
+    transform: rotate(3deg) scale(1);
+  }
+
+  .pulse-btn:hover {
+    transform: none !important;
+    box-shadow: 8px 8px 0 #000 !important;
+    background: var(--accent) !important;
+    color: #000 !important;
+  }
 }

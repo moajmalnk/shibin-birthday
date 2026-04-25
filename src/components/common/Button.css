@@ -3,8 +3,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  font-size: 1.2rem;
+  padding: clamp(10px, 2.6vw, 14px) clamp(16px, 4vw, 28px);
+  font-size: clamp(0.95rem, 3.4vw, 1.2rem);
   font-weight: 900;
   letter-spacing: 2px;
   border-radius: 10px;
@@ -15,6 +15,9 @@
   gap: 10px;
   font-family: 'Bangers', cursive;
   text-transform: uppercase;
+  max-width: 100%;
+  text-align: center;
+  white-space: normal;
 }
 
 .btn-primary {
@@ -53,6 +56,13 @@
 
 .opacity-0 {
   opacity: 0;
+}
+
+@media (max-width: 480px) {
+  .btn {
+    letter-spacing: 1px;
+    gap: 8px;
+  }
 }
 
 @keyframes spin {

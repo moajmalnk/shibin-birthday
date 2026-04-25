@@ -215,18 +215,19 @@ function App() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, type: "spring" }}
           >
-            <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="action-buttons">
               <Button onClick={() => setIsRSVPModalOpen(true)} className="pulse-btn">
                 <Skull size={30} />
                 I'M READY TO ROAST
                 <Skull size={30} />
               </Button>
               
-              <motion.div animate={{ x: buttonPos.x, y: buttonPos.y }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div className="runaway-btn-wrap" animate={{ x: buttonPos.x, y: buttonPos.y }} transition={{ type: "spring", stiffness: 300 }}>
                 <Button 
                   onMouseEnter={handleRunAway} 
                   onClick={handleRunAway}
-                  style={{ background: '#ddd', color: '#888', border: '4px solid #aaa', fontSize: '1rem', padding: '10px 20px', boxShadow: 'none' }}
+                  style={{ background: '#ddd', color: '#888', border: '4px solid #aaa', boxShadow: 'none' }}
+                  className="runaway-btn"
                 >
                   Give him a compliment
                 </Button>
@@ -267,8 +268,8 @@ function App() {
               <div className="success-icon-wrap">
                 <Laugh size={70} color="#000" />
               </div>
-              <h3 className="text-gradient" style={{ fontSize: '2.5rem', margin: 0, fontFamily: 'Bangers' }}>YOU'RE IN!</h3>
-              <p style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 900 }}>Bring your best insults. He's gonna cry.</p>
+              <h3 className="text-gradient success-title">YOU'RE IN!</h3>
+              <p className="success-copy">Bring your best insults. He's gonna cry.</p>
             </motion.div>
           ) : (
             <motion.form 
@@ -293,18 +294,19 @@ function App() {
               
               <div className="form-group">
                 <label>How bad is his hairline today? (1-10)</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <span style={{ fontSize: '1.5rem' }}>👨</span>
+                <div className="hairline-row">
+                  <span className="hairline-emoji">👨</span>
                   <input 
                     type="range" 
                     min="1" max="10" 
                     className="form-input" 
-                    style={{ padding: '0', height: '10px', flex: 1, accentColor: 'var(--primary)' }}
+                    style={{ padding: '0', height: '10px', accentColor: 'var(--primary)' }}
+                    className="hairline-slider"
                     value={formData.hairline}
                     onChange={e => setFormData({...formData, hairline: e.target.value})}
                   />
-                  <span style={{ fontSize: '1.5rem' }}>👴</span>
-                  <span style={{ fontSize: '1.5rem', fontWeight: '900', color: '#000', width: '40px', textAlign: 'right' }}>
+                  <span className="hairline-emoji">👴</span>
+                  <span className="hairline-score">
                     {formData.hairline}
                   </span>
                 </div>
@@ -323,7 +325,7 @@ function App() {
               <Button 
                 type="submit" 
                 className="w-full pulse-btn" 
-                style={{ marginTop: '20px', padding: '15px' }}
+                style={{ marginTop: '20px' }}
                 onMouseEnter={handleButtonHover}
               >
                 {submitText}
